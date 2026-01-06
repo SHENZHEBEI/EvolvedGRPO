@@ -21,7 +21,7 @@ markdown
 
 ## Question Generation
 
-Generate multiple candidate instructions per round:
+Generate multiple candidate instructions per round using question generator:
 
 ```bash
 python3 image.py
@@ -29,10 +29,14 @@ python3 text.py
 ```
 ## Instruction Execution & Reward
 
-Execute image instructions with an imageedit
-Execute text instructions with an LLM
-Merge instructions and directly compute rewards
+Execute image instructions in */imageedit*.
+Execute text instructions with *Qwen2.5-VL-7B*.
 Rewards are reused for single-step question generator training with the same training framework.
+
+```bash
+cd generator
+bash examples/qwen2_5_vl_7b_train.sh
+```
 
 ## Answer Model Training
 
