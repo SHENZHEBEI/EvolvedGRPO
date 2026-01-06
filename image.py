@@ -73,9 +73,9 @@ def evaluate_chat_model():
     json.dump(outputs, open(output_path, "w", encoding="utf-8"), indent=4, ensure_ascii=False)
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--checkpoint", type=str, default="/home2/yqf/new_dataset/nips/EasyQ1/Qwen2.5-VL-7B-Instruct")
+parser.add_argument("--checkpoint", type=str, default="question_generator")
 parser.add_argument("--datasets", type=str, default="K12")
-parser.add_argument("--out-dir", type=str, default="text_instruction.json")
+parser.add_argument("--out-dir", type=str, default="image_instruction.json")
 parser.add_argument("--seed", type=int, default=0)
 args = parser.parse_args()
 
