@@ -1,0 +1,114 @@
+data:
+  train_files: ../dataset/question_generator/round_1
+  val_files: ../dataset/question_generator/round_1
+  prompt_key: problem
+  answer_key: answer
+  image_key: images
+  max_prompt_length: 8192
+  max_response_length: 384
+  # Preserve the global step size on 8 A800s:
+  # 512 source prompts x 5 rollouts = 2560 trajectories.
+  rollout_batch_size: 512
+  val_batch_size: 32
+  format_prompt: null
+  shuffle: true
+  seed: 2025
+  max_pixels: 1048576
+  min_pixels: 200704
+  filter_overlong_prompts: true
+
+algorithm:
+  adv_estimator: grpo
+  disable_kl: false
+  use_kl_loss: true
+  kl_penalty: low_var_kl
+  kl_coef: 1.0e-2
+
+worker:
+  actor:
+    global_batch_size: 128
+    # A800-80G defaults. Reward inference never overlaps this phase.
+    micro_batch_size_per_device_for_update: 8
+    micro_batch_size_per_device_for_experience: 16
+    max_grad_norm: 1.0
+    padding_free: true
+    ulysses_sequence_parallel_size: 1
+    model:
+      model_path: ../models/Qwen2.5-VL-7B-Instruct
+      enable_gradient_checkpointing: true
+      trust_remote_code: true
+      freeze_vision_tower: false
+    optim:
+      lr: 1.0e-6
+      weight_decay: 1.0e-2
+      strategy: adamw
+      lr_warmup_ratio: 0.0
+    fsdp:
+      enable_full_shard: true
+      enable_cpu_offload: false
+      enable_rank0_init: true
+    offload:
+      offload_params: true
+      offload_optimizer: true
+
+  rollout:
+    n: 5
+    temperature: 1.0
+    top_p: 0.99
+    # Must cover the complete 8192-token prompt plus the 384-token response.
+    # Keeping these explicit prevents RolloutConfig's 8192-token default from
+    # failing vLLMRollout initialization before the first training step.
+    max_model_len: 8576
+    max_num_batched_tokens: 8576
+    # During rollout the actor FSDP parameters/optimizer and reward model are
+    # offloaded. Keep 20% for synchronization and CUDA graph peaks.
+    gpu_memory_utilization: 0.8
+    enforce_eager: false
+    enable_chunked_prefill: true
+    tensor_parallel_size: 1
+    limit_images: 1
+    val_override_config:
+      temperature: 0.5
+      n: 1
+
+  ref:
+    fsdp:
+      enable_full_shard: true
+      enable_cpu_offload: true
+      enable_rank0_init: true
+    offload:
+      # Explicitly release reference-policy shards while the same GPUs run the
+      # previous-round answer model for online reward.
+      offload_params: true
+
+  reward:
+    reward_type: function
+    score_function: ../data_augmentation/question_generator_reward.py:score_batch
+    score_function_batch: true
+    score_function_kwargs:
+      votes: 5
+      probability_floor: 0.2
+      min_text_agreement: 2
+      min_clip_similarity: 0.2
+
+trainer:
+  total_episodes: 1
+  # One alternating Q update: randomly sample exactly one 512-prompt rollout
+  # batch, score its five candidates, and stop.
+  max_steps: 1
+  # WANDB_MODE=offline is forced by augmentation_env.sh. TensorBoard provides
+  # the browser UI without sending data outside the server.
+  # Write the durable reward record before optional UI backends.
+  logger: ["reward_jsonl", "console", "wandb", "tensorboard"]
+  project_name: question_generator
+  experiment_name: round_1
+  n_gpus_per_node: 8
+  nnodes: 1
+  val_freq: -1
+  val_before_train: false
+  val_only: false
+  val_generations_to_log: 0
+  save_freq: 1
+  save_limit: 3
+  save_checkpoint_path: null
+  load_checkpoint_path: null

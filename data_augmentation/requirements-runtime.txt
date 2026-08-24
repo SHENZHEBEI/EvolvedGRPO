@@ -1,0 +1,33 @@
+# Standalone runtime dependencies for the 8-GPU A800 augmentation pipeline.
+# This file does not include or reference either training framework package.
+-c constraints-a800-cu124.txt
+torch
+torchvision
+torchaudio
+numpy
+packaging
+huggingface_hub>=0.32.0,<1
+transformers
+qwen-vl-utils
+vllm
+mathruler
+pylatexenc
+pillow
+safetensors
+accelerate
+sentencepiece
+protobuf
+ftfy
+diffusers
+# Directly copied standalone requirements for the question-generator trainer.
+# The installer never reads EasyQ1/requirements.txt or EasyR1/requirements.txt.
+datasets
+pyarrow
+pandas
+omegaconf
+torchdata
+tensordict
+codetiming
+jinja2
+tensorboard
+wandb

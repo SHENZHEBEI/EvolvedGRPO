@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this training reproduction, please cite the EvolvedGRPO paper."
+title: "EvolvedGRPO training reproduction"
+type: software
+license: Apache-2.0
+authors:
+  - family-names: Shen
+    given-names: Zhebei
+  - family-names: Yu
+    given-names: Qifan
+  - family-names: Li
+    given-names: Juncheng
+  - family-names: Ji
+    given-names: Wei
+  - family-names: Chen
+    given-names: Qizhi
+  - family-names: Tang
+    given-names: Siliang
+  - family-names: Zhuang
+    given-names: Yueting
+preferred-citation:
+  type: conference-paper
+  title: "EvolvedGRPO: Unlocking Reasoning in LVLMs via Progressive Instruction Evolution"
+  authors:
+    - family-names: Shen
+      given-names: Zhebei
+    - family-names: Yu
+      given-names: Qifan
+    - family-names: Li
+      given-names: Juncheng
+    - family-names: Ji
+      given-names: Wei
+    - family-names: Chen
+      given-names: Qizhi
+    - family-names: Tang
+      given-names: Siliang
+    - family-names: Zhuang
+      given-names: Yueting
+  conference:
+    name: "Thirty-ninth Conference on Neural Information Processing Systems"
+  year: 2025

@@ -1,0 +1,50 @@
+# Credentials
+.hf_token
+.env
+*.pem
+
+# Repository-local Python and package caches
+.venv-augmentation/
+.conda_envs/
+.cache/
+.tmp/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Downloaded checkpoints and large model artifacts
+models/
+*.safetensors
+*.safetensors.index.json
+*.pt
+*.pth
+*.ckpt
+*.bin
+
+# Tiny text fixtures that validate sharded-checkpoint completeness.
+!data_augmentation/tests/fixtures/**/*.safetensors
+!data_augmentation/tests/fixtures/**/*.safetensors.index.json
+
+# User-provided datasets
+dataset/*
+!dataset/README.md
+!dataset/example_data.json
+*.parquet
+*.arrow
+
+# Generated datasets, checkpoints, caches, and logs
+augmentation_runs/
+answer_model_runs/
+question_generator_runs/
+coevolution_5rounds/
+training_logs/
+wandb/
+ray_results/
+
+# Local editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

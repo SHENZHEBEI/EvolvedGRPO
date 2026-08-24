@@ -1,0 +1,26 @@
+# Reproducible standalone stack for Qwen2.5-VL + Qwen-Image-Edit-2511.
+#
+# All required versions are copied here so installation never reads another
+# project's Dockerfile or requirements. Install the torch family from the
+# official cu124 index; constraints alone do not select a CUDA wheel.
+torch==2.6.0
+torchvision==0.21.0
+torchaudio==2.6.0
+vllm==0.8.3
+transformers==4.51.3
+diffusers==0.37.1
+qwen-vl-utils==0.0.10
+numpy==1.26.4
+ray==2.43.0
+flash-attn==2.7.4.post1
+flashinfer-python==0.2.2.post1
+datasets==3.5.0
+pyarrow==19.0.1
+pandas==2.2.3
+omegaconf==2.3.0
+torchdata==0.11.0
+tensordict==0.7.2
+codetiming==1.4.0
+jinja2==3.1.6
+tensorboard==2.19.0
+wandb==0.19.11

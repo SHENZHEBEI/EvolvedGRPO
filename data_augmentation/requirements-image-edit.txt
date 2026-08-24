@@ -1,0 +1,14 @@
+# Standalone image-edit dependencies. The full mixed augmentation environment
+# should normally install requirements-runtime.txt instead.
+-c constraints-a800-cu124.txt
+torch
+torchvision
+numpy
+packaging
+diffusers
+transformers
+accelerate
+safetensors
+sentencepiece
+protobuf
+ftfy
