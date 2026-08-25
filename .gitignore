@@ -15,7 +15,7 @@ __pycache__/
 .mypy_cache/
 
 # Downloaded checkpoints and large model artifacts
-models/
+/models/
 *.safetensors
 *.safetensors.index.json
 *.pt
